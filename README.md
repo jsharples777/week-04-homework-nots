@@ -1,6 +1,6 @@
 # 04 JavaScript: Coding Quiz
 
-This small application(https://jsharples777.github.io/week-04-homework-nots/index.html) makes use of dynamic Javascript to modify the HTML DOM
+This small application(https://week-04-homework-nots.herokuapp.com/) makes use of dynamic Javascript to modify the HTML DOM
 to provide the user with a randomised list of questions relating to Javascript, and three or more answers, only one of which is correct.  Getting a question wrong, will give a time penalty.
 
 At the end of the quiz the user may (optionally) give their name/initials to save the score.
