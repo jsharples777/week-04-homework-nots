@@ -59,9 +59,12 @@ class DataModel {
           ideally the questions array would be private to this class
         */
         logger.log("Getting Questions", 5);
+        logger.log(this.questions,5);
+        logger.log(this.questions.length);
         let copiedQuestions = [];
         for (let index = 0; index < this.questions.length; index++) {
             let question = this.questions[index];
+            logger.log(question,5);
             let copiedQuestion = new Question(question.id, question.question);
             copiedQuestions.push(copiedQuestion);
             let copiedAnswers = [];
@@ -71,6 +74,7 @@ class DataModel {
                 copiedAnswers.push(copiedAnswer);
             }
             copiedQuestion.answers = copiedAnswers;
+            logger.log(copiedQuestion,5);
         }
         logger.log(copiedQuestions, 5);
         return copiedQuestions;

@@ -1,4 +1,5 @@
-  {
+  [
+    {
     "id": "1",
     "question": "Inside which HTML element do we put the JavaScript?",
     "answers": [
@@ -176,17 +177,17 @@
     "answers": [
       {
         "id": "1",
-        "answer": "for (i = 0; i &lt;= 5; i++)",
+        "answer": "for (i = 0; i <= 5; i++)",
         "isCorrect": true
       },
       {
         "id": "2",
-        "answer": "for (i = 0; i &lt;= 5)",
+        "answer": "for (i = 0; i <= 5)",
         "isCorrect": false
       },
       {
         "id": "3",
-        "answer": "for (i &lt;= 5; i++)",
+        "answer": "for (i <= 5; i++)",
         "isCorrect": false
       },
       {
@@ -212,7 +213,7 @@
       },
       {
         "id": "3",
-        "answer": "&lt;!--This is a comment--&gt;",
+        "answer": "<!--This is a comment-->",
         "isCorrect": false
       }
     ]
@@ -243,4 +244,5 @@
       }
     ]
   }
+    ]
 

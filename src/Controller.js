@@ -1,5 +1,5 @@
 import logger from './util/SimpleDebug.js';
-import DataModel from "./DataModel";
+import DataModel from "./DataModel.js";
 
 /* this class will link the functionality of the data model and the application (view) */
 class Controller {
@@ -67,11 +67,11 @@ class Controller {
         /* randomise the answers in each question */
         for (let i = 0; i < randomisedQuestions.length; i++) {
             let question = randomisedQuestions[i];
-            logger.log("Randomising answers to question " + question.id,5);
-            logger.log(question,5);
+            logger.log("Randomising answers to question " + question.id, 5);
+            logger.log(question, 5);
             question.answers = this.randomiseAnswers(question);
-            logger.log("After randomising answers to question " + question.id,5);
-            logger.log(question,5);
+            logger.log("After randomising answers to question " + question.id, 5);
+            logger.log(question, 5);
         }
 
         return randomisedQuestions;

@@ -1,5 +1,5 @@
 import React from "react";
-import AnswerList from "./AnswerList";
+import AnswerList from "./AnswerList.js";
 
 export default function QuestionDisplay(props) {
 
@@ -18,7 +18,7 @@ export default function QuestionDisplay(props) {
         </div>
     ) : (
         <div id="questionDisplayView">
-            <h4 id="question">{props.children}</h4>
+            <h4 id="question">A short quiz on Javascript.  Please Start to begin.</h4>
             <button id="startQuizButton" onClick={startQuizHandler}>Start Quiz</button>
         </div>
     );

@@ -123,4 +123,8 @@ button {
     display: none;
 }
 
+.nothidden {
+    display: block;
+}
+
 
