@@ -18,7 +18,7 @@ class App extends React.Component {
 
         /* set the debugging log */
         logger.setLevel(5);
-        logger.setOn();
+        logger.setOff();
         logger.log("Setting starting state and context");
 
         this.controller = null;
