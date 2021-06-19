@@ -1,11 +1,8 @@
  import {Answer,Question} from './DataTypes.js';
 import DataSource from "./DataSource.js";
-import logger from "./SimpleDebug.js";
+import logger from "../util/SimpleDebug.js";
 
 class ObjectDataSourceDelegate extends DataSource {
-    constructor() {
-        super();
-    }
 
     loadQuestions() {
         let questions = [];

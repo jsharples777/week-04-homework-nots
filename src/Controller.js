@@ -1,38 +1,27 @@
-import logger from './SimpleDebug.js';
+import logger from './util/SimpleDebug.js';
+import DataModel from "./DataModel";
 
 /* this class will link the functionality of the data model and the application (view) */
 class Controller {
     applicationView = null;
-    htmlDOM = null;
 
-    constructor(applicationView, htmlDOM, dataModel) {
+
+    constructor(applicationView, highScoreStorageToUse) {
         this.applicationView = applicationView;
-        this.htmlDOM = htmlDOM;
-        this.dataModel = dataModel;
+        this.dataModel = new DataModel(highScoreStorageToUse);
         this.timePenaltyForWrongAnswer = 30;
         this.resetTimer();
 
-        /* store useful view components */
-        let goToSectionView = this.htmlDOM.getElementById("gotoSection");
-        let startQuizButton = this.htmlDOM.getElementById("startQuizButton");
-        let questionDisplayView = this.htmlDOM.getElementById("questionDisplayView");
-        let addScoreFormView = this.htmlDOM.getElementById("addScoreForm");
-        let resetScoresButton = this.htmlDOM.getElementById("resetScores");
 
         /* setup the randomised questions and set question index to the first in the list */
         this.resetQuestions();
 
         /* setup the event handlers */
         this.handleStartQuiz = this.handleStartQuiz.bind(this);
-        startQuizButton.addEventListener('click', this.handleStartQuiz);
         this.handleAnswerSelection = this.handleAnswerSelection.bind(this);
-        questionDisplayView.addEventListener('click', this.handleAnswerSelection);
         this.handleGotoSection = this.handleGotoSection.bind(this);
-        goToSectionView.addEventListener('click', this.handleGotoSection);
         this.handleAddScore = this.handleAddScore.bind(this);
-        addScoreFormView.addEventListener('submit', this.handleAddScore);
         this.handleResetScores = this.handleResetScores.bind(this);
-        resetScoresButton.addEventListener('click', this.handleResetScores);
     }
 
     resetQuestions() {
@@ -213,7 +202,7 @@ class Controller {
         let view = event.target; // should be the form object
         let nameView = view.querySelector("#nameText");
         /* if there is no name, we are assuming they don't want to save their score */
-        if (nameView.value != "") {
+        if (nameView.value !== "") {
             /* get the score out of the hidden details */
             let hiddenScoreView = view.querySelector("#score");
             let score = parseInt(hiddenScoreView.getAttribute("value"));

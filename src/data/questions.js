@@ -1,4 +1,4 @@
- export default //JSON hack - HTML doesn't support json loading
+let data =  //JSON hack - HTML doesn't support json loading
 [
   {
     "id": "1",
@@ -246,3 +246,5 @@
     ]
   }
 ]
+
+export default data;

@@ -15,6 +15,15 @@
     setLevel(newLevel) {
         this.debugDepth = newLevel;
     }
+
+    setOn() {
+        this.debugOn = true;
+    }
+
+    setOff() {
+        this.debugOn = false;
+    }
+
 }
 
 let logger = new SimpleDebug();

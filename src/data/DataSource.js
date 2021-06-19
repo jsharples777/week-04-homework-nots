@@ -1,7 +1,5 @@
  /* data source interface to be implemented */
 class DataSource {
-    constructor() {
-    }
 
     /* return an array of question objects */
     loadQuestions() {

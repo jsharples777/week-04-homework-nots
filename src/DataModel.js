@@ -1,7 +1,7 @@
-import {Answer, HighScore, Question} from './DataTypes.js';
-import logger from './SimpleDebug.js';
-import ObjectDataSourceDelegate from "./ObjectDataSourceDelegate.js";
-import FileDataSourceDelegate from "./FileDataSourceDelegate.js";
+import {Answer, HighScore, Question} from './data/DataTypes.js';
+import logger from './util/SimpleDebug.js';
+// import ObjectDataSourceDelegate from "./ObjectDataSourceDelegate.js";
+import FileDataSourceDelegate from "./data/FileDataSourceDelegate.js";
  
 class DataModel {
     simpleStorage = null;

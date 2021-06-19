@@ -1,67 +1,11 @@
 import React from 'react';
-import './App.css';
+import './css/App.css';
 import Controller from "./Controller";
-import DataModel from "./DataModel";
-import logger from "./SimpleDebug";
+import logger from "./util/SimpleDebug";
+import LinkToOtherSection from "./component/LinkToOtherSection";
+import Timer from "./component/Timer";
+import QuestionDisplay from "./component/QuestionDisplay";
 
-
-
-function AnswerView(props) {
-    return (
-      <li className="answer" id={props.id} isCorrect={props.iscorrect}>
-        {props.id}.  {props.children}
-      </li>
-    );
-}
-
-class AnswerListView extends React.Component {
-  render () {
-    let answers = this.props.answers;
-    if (answers === undefined) {
-        answers = [];
-    }
-    return (
-        <div id="answerList" className="answerList">
-          <ul id="answers">
-            {answers.map(answer => <AnswerView key={answer.id} iscorrect={answer.isCorrect+""} >{answer.answer}</AnswerView>)}
-          </ul>
-        </div>
-    );
-  }
-}
-
-class QuestionDisplayView extends React.Component {
-  render() {
-    let question = this.props.question;
-    if (question === undefined) {
-        question = {};
-    }
-    return (
-        <div id="questionDisplayView">
-          <h4 id="question">{question.question}</h4>
-          <AnswerListView answers={question.answers}/>
-          <ScoreDisplay/>
-        </div>
-    )
-  }
-}
-
-function HighScores() {
-  return (
-      <div id="goToHighScores" className={"linkToHighScores col-sm-3"}>View High Scores</div>
-  )
-}
-
-function Timer() {
-  return (
-      <div id="timer" className={"timer col-sm-3"}>Time: 0s</div>
-  )
-}
-function ScoreDisplay() {
-    return (
-        <div id="scoreDisplay" className={"col-sm-3 hidden"}></div>
-    )
-}
 
 class App extends React.Component {
     /*
@@ -72,6 +16,7 @@ class App extends React.Component {
       4.  Not showing Quiz, but showing high scores - VALUE 3;
      */
 
+
     constructor() {
         super();
         logger.log("Setting starting state");
@@ -79,34 +24,26 @@ class App extends React.Component {
     }
 
     /* components are all setup, now we can render everything */
-    componentDidMount() {
-        /* setup the model view controller */
-        let model = new DataModel(window.localStorage);
-        let controller = new Controller(this,document,model);
+    initialise() {
+        /* setup the controller */
+        this.controller = new Controller(this, window.localStorage);
+        logger.log("Setting starting context");
+        this.currentlyShowingQuiz = true;  // showing quiz, not the high scores
+        this.startingTime = 100;
+        this.timePenalty = 10;
+        this.currentTime = this.startingTime;
+        this.quizState = -1; //not started
+        this.answerFeedback = "";
     }
 
-    /* construct the view */
-    render() {
-        switch(this.state.quizState) {
-            case 0: {
-
-            } //quiz not started
-        }
-        return (
-            <div id="App" className="App container-fluid">
-                <HighScores/>
-                <QuestionDisplayView question={this.state.currentQuestion}/>
-                <Timer/>
-            </div>
-        );
+    updateQuestionDisplay(question) {
+        /* remove any existing question */
+        this.setState({currentQuestion:question, quizState: this.quizState});
     }
 
     callbackQuizStarted() {
-        /* the timer has been started by the controller */
+        // /* the timer has been started by the controller */
         this.quizState = 1; // record the current state - quiz started
-        /* hide the start button */
-        let startQuizButtonView = document.getElementById("startQuiz");
-        startQuizButtonView.style.display = "none";
         /* now display the first question */
         let question = this.controller.getNextQuestion();
         logger.log(question,2);
@@ -114,6 +51,12 @@ class App extends React.Component {
     }
 
 
+    callbackTimerRanOut() {
+        logger.log("Timer ran out",1);
+        this.quizState = 2;
+        let score = 0;
+        this.callbackQuestionsFinished(score);
+    }
 
     callbackShowNextQuestion() {
         /* ask for the next question from the controller */
@@ -124,26 +67,35 @@ class App extends React.Component {
         */
 
         if (question != null) {
-            this.updateQuestionDisplay(question);
+            let answerFeedbackTimeOut = -1; // no timeout
+            this.updateQuestionDisplay(question,answerFeedbackTimeOut);
         }
 
     }
 
-
-    callbackTimerRanOut() {
-        this.setState({quizState:2});
-        let score = 0;
-
+    callbackQuestionsFinished(score = 0) {
+        logger.log("Quiz Finished - no further questions", 1);
+        this.quizState = 2;
+        this.score = score;
+        let answerFeedbackTimeOut = 2000;
+        /* clear the question display */
+        this.updateQuestionDisplay(null, answerFeedbackTimeOut);
+        /* let the controller manage the user submission of a user added highscore */
     }
 
-    callbackQuestionsFinished(score) {
-        this.setState({quizState:2});
-
+    /* private */ resetDisplay(showQuiz = true) {
+        this.currentlyShowingQuiz = showQuiz;
+        this.currentTime = this.startingTime;
+        this.quizState = -1; // no quiz started
+        this.setState({currentQuestion: null, highScores: [], quizState: this.quizState});
     }
 
-    callbackShowHighScores() {
-        this.setState({quizState:3});
+    /* private */ showHighScores() {
+        let highScores = this.controller.getHighScores();
+        this.setState({currentQuestion: null,highScores:highScores,quizState:this.quizState})
     }
+
+
 
     callbackShowOtherSection() {
         logger.log("Show the other section", 1);
@@ -161,8 +113,13 @@ class App extends React.Component {
     }
 
     callbackUpdateTimerDisplay(timeRemaining) {
+        /* This is a naughty method that is bypassing the usual REACT rendering for performance
+          accessing the timer element directly.  We are trying to avoid the page re-rendering for each
+          timer countdown, but need to store the time remaining for later re-render calls.
+         */
         logger.log("Update timer display " + timeRemaining, 5);
-        this.timerView.innerHTML = timeRemaining + " s";
+        this.currentTime = timeRemaining;  // save what the timer should be showing for later re-render calls
+        document.getElementById("timer").innerHTML = timeRemaining + " s";
     }
 
     callbackResetQuizDisplay() {
@@ -178,7 +135,40 @@ class App extends React.Component {
         this.answerFeedbackView.style.display = "block";
     }
 
+    /* components are all setup, now we can render everything */
+    componentDidMount() {
+        logger.log("REACT component mounted - will initialise",1);
+        this.initialise();
 
+        /* set the debugging log */
+        logger.setLevel(3);
+        logger.setOn();
+    }
+
+    /* construct the view */
+    render() {
+        return (
+            <div id="App" className="App">
+                <header className="container-fluid">
+                    <div className="row">
+                        <LinkToOtherSection>View High Scores</LinkToOtherSection>
+                        <h1 className="col-sm-8">Coding Quiz</h1>
+                        <Timer>Time: {this.currentTIme}s</Timer>
+                    </div>
+                </header>
+                <div id="root" className="container-fluid">
+                    <div className="row">
+                        <div id="content" className="content col-sm-12 container-fluid">
+                            <div className="col">
+                                <QuestionDisplay question={this.state.currentQuestion}>A series of coding questions about Javascript, please press Start Quiz to begin</QuestionDisplay>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <Timer/>
+            </div>
+        );
+    }
 }
 
 
