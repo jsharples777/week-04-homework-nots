@@ -106,13 +106,13 @@ class App extends React.Component {
     /* private */
     resetDisplay(showQuiz = true) {
         this.currentRemainingTime = this.startingTime;
-        this.setState({currentQuestion: null, highScores: [], quizState: this.quizState});
+        this.setState({currentQuestion: null, highScores: [], quizState: this.quizState, answerFeedback: ""});
     }
 
     /* private */
     showHighScores() {
         let highScores = this.getController().getHighScores();
-        this.setState({currentQuestion: null, highScores: highScores, quizState: this.quizState})
+        this.setState({currentQuestion: null, highScores: highScores, quizState: this.quizState, answerFeedback: ""})
     }
 
 
@@ -181,9 +181,11 @@ class App extends React.Component {
         let hasTheQuizStarted = (this.state.quizState === 1);
         let hasQuizFinished = (this.state.quizState === 2);
 
+        let hasAnswerFeedback = (this.state.answerFeedback !== "");
+
         // if we have started the quiz add the user feedback area
         const renderAnswerFeedBack = () => {
-            if (hasTheQuizStarted || hasQuizFinished) {
+            if ((hasTheQuizStarted || hasQuizFinished) && hasAnswerFeedback) {
                 return <AnswerFeedback>{this.state.answerFeedback}</AnswerFeedback>;
             }
         }

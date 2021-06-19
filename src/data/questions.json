@@ -5,22 +5,22 @@
     "answers": [
       {
         "id": "1",
-        "answer": "&lt;javascript&gt;",
+        "answer": "javascript>",
         "isCorrect": false
       },
       {
         "id": "2",
-        "answer": "&lt;js&gt;",
+        "answer": "<js>",
         "isCorrect": false
       },
       {
         "id": "3",
-        "answer": "&lt;script&gt;",
+        "answer": "<script>",
         "isCorrect": true
       },
       {
         "id": "4",
-        "answer": "&lt;scripting&gt;",
+        "answer": "<scripting>",
         "isCorrect": false
       }
     ]
@@ -140,12 +140,12 @@
       },
       {
         "id": "3",
-        "answer": "if i &lt;&gt; 5",
+        "answer": "if i <> 5",
         "isCorrect": false
       },
       {
         "id": "4",
-        "answer": "if (i &lt;&gt; 5)",
+        "answer": "if (i <> 5)",
         "isCorrect": false
       }
     ]
@@ -156,7 +156,7 @@
     "answers": [
       {
         "id": "1",
-        "answer": "while (i &lt;= 10)",
+        "answer": "while (i <= 10)",
         "isCorrect": true
       },
       {
@@ -166,7 +166,7 @@
       },
       {
         "id": "3",
-        "answer": "while (i &lt;= 10; i++)",
+        "answer": "while (i <= 10; i++)",
         "isCorrect": false
       }
     ]
