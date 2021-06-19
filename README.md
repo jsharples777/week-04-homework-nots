@@ -7,7 +7,7 @@ At the end of the quiz the user may (optionally) give their name/initials to sav
 
 The user can see previous high scores, and reset that list if desired.
 
-## User Story
+## User Story 
 
 ```
 AS A coding boot camp student
