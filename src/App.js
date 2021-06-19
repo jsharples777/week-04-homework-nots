@@ -99,7 +99,10 @@ class App extends React.Component {
           */
 
         setTimeout(() => {
-            document.getElementById("answerFeedBack").style.display = "none";
+            try {
+                document.getElementById("answerFeedBack").style.display = "none";
+            }
+            catch (e) {} // don't worry about errors here, it means the answer feedback has already gone
         }, 2000);
     }
 
